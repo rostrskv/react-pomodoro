@@ -1,23 +1,91 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import NavBar from "./components/NavBar";
+import Clock from "./components/CLock";
+import ActionRow from "./components/ActionRow";
+import React, { useEffect, useState } from "react";
+import { WORK_SECONDS, BREAK_SECONDS } from "./constants";
 
 function App() {
+  const [pomodoroState, setPomodoroState] = useState({
+    timerSeconds: WORK_SECONDS,
+    isWorkMode: true,
+    isActive: false,
+  });
+
+  useEffect(() => {
+    if (!pomodoroState.isActive) {
+      return;
+    }
+    const timeoutId = setInterval(tick, 1000);
+    return () => clearInterval(timeoutId);
+  });
+
+  /**
+   * starts the timer by setting an interval, and calling the tick method
+   */
+  const start = () => {
+    setPomodoroState({ ...pomodoroState, isActive: true });
+  };
+  /**
+   * clears the interval and stops the timer
+   */
+  const pause = () => {
+    setPomodoroState({ ...pomodoroState, isActive: false });
+  };
+  /**
+   * pauses the timer, and resets the state minutes/seconds (according to the isWorkMode property)
+   */
+  const reset = () =>
+    setPomodoroState({
+      ...pomodoroState,
+      isActive: false,
+      timerSeconds: pomodoroState.isWorkMode ? WORK_SECONDS : BREAK_SECONDS,
+    });
+  /**
+   * stops the timer and resets the time to the next mode (called when the time is equal to 0)
+   */
+  const finished = () => {
+    setPomodoroState({
+      ...pomodoroState,
+      isWorkMode: !pomodoroState.isWorkMode,
+      isActive: false,
+      timerSeconds: !pomodoroState.isWorkMode ? WORK_SECONDS : BREAK_SECONDS,
+    });
+  };
+  /**
+   * receives a parameter ('break' or 'work' mode) and updates the state properties to the relevant mode, also invokes the reset method
+   * @param {boolean} isWorkMode
+   */
+  const changeMode = (isWorkMode) => {
+    setPomodoroState({
+      ...pomodoroState,
+      isWorkMode,
+      isActive: false,
+      timerSeconds: isWorkMode ? WORK_SECONDS : BREAK_SECONDS,
+    });
+  };
+  /**
+   * the logical method to be called every second. This method should check if the timer ended
+   * (as to not to run time negatively) and format the minutes and seconds (the format should be 04:03 or 21:09, not 4:3 or 21:9
+   */
+  const tick = () => {
+    setPomodoroState({
+      ...pomodoroState,
+      timerSeconds: pomodoroState.timerSeconds - 1,
+    });
+    if (pomodoroState.timerSeconds <= 0) {
+      finished();
+    }
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavBar changeMode={changeMode} isWorkMode={pomodoroState.isWorkMode}/>
+      <Clock seconds={pomodoroState.timerSeconds} />
+      <ActionRow
+        activateAction={pomodoroState.isActive ? pause : start}
+        resetClicked={reset}
+        currentAction={pomodoroState.isActive ? "Pause" : "Start"}
+      />
     </div>
   );
 }
