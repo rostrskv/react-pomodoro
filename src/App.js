@@ -69,17 +69,19 @@ function App() {
    * (as to not to run time negatively) and format the minutes and seconds (the format should be 04:03 or 21:09, not 4:3 or 21:9
    */
   const tick = () => {
+    const timerSeconds = pomodoroState.timerSeconds - 1;
+    if (timerSeconds <= 0) {
+      finished();
+      return;
+    }
     setPomodoroState({
       ...pomodoroState,
-      timerSeconds: pomodoroState.timerSeconds - 1,
+      timerSeconds,
     });
-    if (pomodoroState.timerSeconds <= 0) {
-      finished();
-    }
   };
   return (
     <div className="App">
-      <NavBar changeMode={changeMode} isWorkMode={pomodoroState.isWorkMode}/>
+      <NavBar changeMode={changeMode} isWorkMode={pomodoroState.isWorkMode} />
       <Clock seconds={pomodoroState.timerSeconds} />
       <ActionRow
         activateAction={pomodoroState.isActive ? pause : start}
