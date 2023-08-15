@@ -1,7 +1,7 @@
 /**
- * for testing
+ * =1, higher for testing
  */
-const speedFactor = 120
+const speedFactor = 1
 /**
  * Work duration in seconds
  */
