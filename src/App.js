@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { WORK_SECONDS, BREAK_SECONDS } from "./constants";
 
 function App() {
-  const [pomodoroState, setPomodoroState] = useState({
+  const [pomodoroState, setPomodoroState] = useState({    
     timerSeconds: WORK_SECONDS,
     isWorkMode: true,
     isActive: false,
@@ -36,33 +36,24 @@ function App() {
    * pauses the timer, and resets the state minutes/seconds (according to the isWorkMode property)
    */
   const reset = () =>
-    setPomodoroState({
-      ...pomodoroState,
+    setPomodoroState((state) => ({
+      ...state,
       isActive: false,
-      timerSeconds: pomodoroState.isWorkMode ? WORK_SECONDS : BREAK_SECONDS,
-    });
+      timerSeconds: state.isWorkMode ? WORK_SECONDS : BREAK_SECONDS,
+    }));
   /**
    * stops the timer and resets the time to the next mode (called when the time is equal to 0)
    */
   const finished = () => {
-    setPomodoroState({
-      ...pomodoroState,
-      isWorkMode: !pomodoroState.isWorkMode,
-      isActive: false,
-      timerSeconds: !pomodoroState.isWorkMode ? WORK_SECONDS : BREAK_SECONDS,
-    });
+    changeMode(!pomodoroState.isWorkMode);
   };
   /**
-   * receives a parameter ('break' or 'work' mode) and updates the state properties to the relevant mode, also invokes the reset method
-   * @param {boolean} isWorkMode
+   * receives a parameter and updates the state properties to the relevant mode, also invokes the reset method
+   * @param {boolean} isWorkMode true: Work mode, false: Break mode
    */
   const changeMode = (isWorkMode) => {
-    setPomodoroState({
-      ...pomodoroState,
-      isWorkMode,
-      isActive: false,
-      timerSeconds: isWorkMode ? WORK_SECONDS : BREAK_SECONDS,
-    });
+    setPomodoroState((state) => ({ ...state, isWorkMode }));
+    reset();
   };
   /**
    * the logical method to be called every second. This method should check if the timer ended
@@ -74,10 +65,7 @@ function App() {
       finished();
       return;
     }
-    setPomodoroState({
-      ...pomodoroState,
-      timerSeconds,
-    });
+    setPomodoroState({ ...pomodoroState, timerSeconds });
   };
   return (
     <div className="App">
@@ -86,7 +74,7 @@ function App() {
       <ActionRow
         activateAction={pomodoroState.isActive ? pause : start}
         resetClicked={reset}
-        currentAction={pomodoroState.isActive ? "Pause" : "Start"}
+        currentAction={pomodoroState.isActive ? "Pause" : "Start"}        
       />
     </div>
   );
