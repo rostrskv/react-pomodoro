@@ -11,6 +11,11 @@ button {
   border: none;
   border-radius: 4px;
   padding: 6px;
+  transition: filter 0.3s;
+}
+
+button:not([disabled]):hover{
+  filter: brightness(125%);
 }
 
 .nav-bar {
@@ -21,31 +26,6 @@ button {
   justify-content: space-around;
 }
 
-.clock{
-  display: grid;
-  justify-items: center;
-  margin: 2rem;
-}
-
-.clock svg {
-  display: block;
-  font-size: 22px;
-  text-transform: uppercase;
-  width: 200px;
-  transform: rotate(2deg);
-}
-
-.clock svg text {
-  fill: white;
-  text-align: center;
-}
-
-.clock time {
-  fill: white;
-  color: white;
-  font-size: 48px;
-}
-
 .action-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
@@ -54,6 +34,7 @@ button {
   justify-content: space-around;
   margin: 10px 100px;
 }
+
 .action-row button {
   background-color: #e17f62;
   color: white;

@@ -1,0 +1,23 @@
+.clock {
+  display: grid;
+  justify-items: center;
+  margin: 2rem;
+}
+
+.clock svg {
+  display: block;
+  text-transform: uppercase;
+  width: 200px;
+  transform: rotate(2deg);
+}
+
+.clock svg text {
+  fill: white;
+  text-align: center;
+}
+
+.clock time {
+  fill: white;
+  color: white;
+  font-size: 48px;
+}
