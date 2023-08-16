@@ -9,15 +9,9 @@ import "./Clock.css";
 export default function Clock({ seconds }) {
   /** formats seconds to mm:ss pattern */
   const totalSecondsToString = (seconds) => {
-    const doubleDigits = new Intl.NumberFormat("en-EN", {
-      maximumFractionDigits: 0,
-      minimumIntegerDigits: 2,
-    });
-    const formattedSeconds = doubleDigits.format(Math.floor(seconds % 60));
-    const formattedMinutes = doubleDigits.format(
-      Math.floor((seconds / 60) % 60)
-    );
-    return `${formattedMinutes}:${formattedSeconds}`;
+    const padZeroes = (number) =>
+      Math.floor(number).toString().padStart(2, "0");
+    return `${padZeroes(seconds / 60)}:${padZeroes(seconds % 60)}`;
   };
   const timeString = totalSecondsToString(seconds);
   return (
