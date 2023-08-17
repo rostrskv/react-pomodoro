@@ -7,13 +7,9 @@ import "./Clock.css";
  * @returns
  */
 export default function Clock({ seconds }) {
-  /** formats seconds to mm:ss pattern */
-  const totalSecondsToString = (seconds) => {
-    const padZeroes = (number) =>
-      Math.floor(number).toString().padStart(2, "0");
-    return `${padZeroes(seconds / 60)}:${padZeroes(seconds % 60)}`;
-  };
-  const timeString = totalSecondsToString(seconds);
+  const timeString = [seconds / 60, seconds % 60]
+    .map((number) => `${Math.floor(number)}`.padStart(2, "0"))
+    .join(":");
   return (
     <div className="clock">
       <ArchedText text="Pomodoro" />

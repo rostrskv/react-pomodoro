@@ -1,12 +1,12 @@
 import "./App.css";
 import NavBar from "./components/NavBar";
-import Clock from "./components/CLock";
+import Clock from "./components/Clock";
 import ActionRow from "./components/ActionRow";
 import React, { useEffect, useState } from "react";
 import { WORK_SECONDS, BREAK_SECONDS } from "./constants";
 
 function App() {
-  const [pomodoroState, setPomodoroState] = useState({    
+  const [pomodoroState, setPomodoroState] = useState({
     timerSeconds: WORK_SECONDS,
     isWorkMode: true,
     isActive: false,
@@ -74,7 +74,7 @@ function App() {
       <ActionRow
         activateAction={pomodoroState.isActive ? pause : start}
         resetClicked={reset}
-        currentAction={pomodoroState.isActive ? "Pause" : "Start"}        
+        currentAction={pomodoroState.isActive ? "Pause" : "Start"}
       />
     </div>
   );
